@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ts.debug",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/${relativeFile}",
+      "preLaunchTask": "debug-build-ts",
+      "sourceMaps": true,
+      "smartStep": true,
+      "internalConsoleOptions": "openOnSessionStart",
+      "console": "integratedTerminal",
+      "outFiles": ["${workspaceFolder}/out/**/*.js"]
+    },
+    {
+      "name": "ts.jest.debug",
+      "type": "node",
+      "request": "launch",
+      "args": ["--runInBand", "${file}"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart",
+      "disableOptimisticBPs": true,
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "resolveSourceMapLocations": ["!**/node_modules/**"]
+    },
+    {
+      "name": "ts.sls.offline.debug",
+      "type": "node",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "openOnSessionStart",
+      "sourceMaps": true,
+      "smartStep": true,
+      "cwd": "${workspaceFolder}/src",
+      "program": "${workspaceRoot}/node_modules/.bin/sls",
+      "args": ["offline", "--noTimeout", "--debug=../webpack.config.debug.js"],
+      "outFiles": ["${workspaceFolder}/.webpack/**/*.js"],
+      "env": { "SLS_DEBUG": "*" }
+    }
+  ]
+}

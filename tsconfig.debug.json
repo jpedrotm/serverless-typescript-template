@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.paths.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "strict": true,
+    "target": "es2019",
+    "baseUrl": ".",
+    "lib": ["es2020"],
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "./out",
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", "out"]
+}

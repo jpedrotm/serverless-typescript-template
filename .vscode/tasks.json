@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "debug-build-ts",
+      "type": "typescript",
+      "tsconfig": "tsconfig.debug.json",
+      "problemMatcher": ["$tsc"],
+      "group": "build"
+    }
+  ]
+}

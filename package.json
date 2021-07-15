@@ -1,0 +1,68 @@
+{
+  "name": "linkal",
+  "version": "1.0.0",
+  "description": "Serverless aws-nodejs-typescript template",
+  "main": "serverless.ts",
+  "scripts": {
+    "dependency:check": "ncu",
+    "dependency:update": "ncu -u --timeout 120000 && npm install",
+    "check:code": "npm run lint && tsc --noemit",
+    "invoke": "npm run check:code && npm run sls -- invoke local",
+    "package": "npm run check:code && npm run sls -- package",
+    "remove": "cd src && sls remove",
+    "lint": "eslint \"**/*.ts\" \"**/*.js\"",
+    "lint:fix": "npm run lint -- --fix",
+    "start": "npm run check:code && npm run sls -- offline --debug=webpack.config.debug.js",
+    "sls": "cd src && node --max-old-space-size=$npm_package_config_maxMemory ../node_modules/.bin/sls",
+    "test": "jest -w 2",
+    "test:watch": "jest -w 2 --watch",
+    "test:coverage": "jest -w 2 --coverage --coverageReporters html json lcov clover text text-summary",
+    "test:nocache": "jest -w 2 --no-cache"
+  },
+  "config": {
+    "maxMemory": 4096
+  },
+  "engines": {
+    "node": "14",
+    "npm": "6.14"
+  },
+  "dependencies": {
+    "lambda-log": "3.0.0",
+    "source-map-support": "0.5.19",
+    "zod": "3.2.0"
+  },
+  "devDependencies": {
+    "@serverless/event-mocks": "1.1.0",
+    "@types/aws-lambda": "8.10.77",
+    "@types/jest": "26.0.23",
+    "@types/lambda-log": "2.2.0",
+    "@types/node": "14.14.35",
+    "@typescript-eslint/eslint-plugin": "4.27.0",
+    "@typescript-eslint/parser": "4.27.0",
+    "eslint": "7.29.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-sort-keys-fix": "1.1.1",
+    "import-sort-style-module": "6.0.0",
+    "jest": "27.0.4",
+    "json-loader": "^0.5.7",
+    "json-schema-to-ts": "1.6.4",
+    "npm-check-updates": "11.7.1",
+    "prettier": "2.3.1",
+    "prettier-plugin-import-sort": "0.0.7",
+    "serverless": "2.47.0",
+    "serverless-offline": "7.0.0",
+    "serverless-prune-plugin": "1.5.0",
+    "serverless-webpack": "5.5.1",
+    "ts-jest": "27.0.3",
+    "ts-loader": "9.2.3",
+    "ts-node": "10.0.0",
+    "tsconfig-paths": "3.9.0",
+    "tsconfig-paths-webpack-plugin": "3.5.1",
+    "typescript": "4.3.4",
+    "webpack": "5.39.1",
+    "webpack-node-externals": "3.0.0"
+  },
+  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "license": "MIT"
+}

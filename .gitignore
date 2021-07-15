@@ -1,0 +1,24 @@
+# Package directories
+node_modules
+packages/**/lib
+
+# build or temporary outputs
+out/
+*.ignore.*
+
+# Logs
+logs
+*.log
+npm-debug.log
+
+# IDE
+**/.idea
+
+# OS
+.DS_Store
+.tmp
+
+# Coverage
+coverage
+
+.nvmrc
