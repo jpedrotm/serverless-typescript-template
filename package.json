@@ -2,11 +2,11 @@
   "name": "linkal",
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
-  "main": "serverless.ts",
   "scripts": {
     "dependency:check": "ncu",
     "dependency:update": "ncu -u --timeout 120000 && npm install",
     "check:code": "npm run lint && tsc --noemit",
+    "deploy": "npm run check:code && npm run sls -- deploy --verbose",
     "invoke": "npm run check:code && npm run sls -- invoke local",
     "package": "npm run check:code && npm run sls -- package",
     "remove": "cd src && sls remove",
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "lambda-log": "3.0.0",
-    "source-map-support": "0.5.19",
     "zod": "3.2.0"
   },
   "devDependencies": {
@@ -45,7 +44,7 @@
     "eslint-plugin-sort-keys-fix": "1.1.1",
     "import-sort-style-module": "6.0.0",
     "jest": "27.0.4",
-    "json-loader": "^0.5.7",
+    "json-loader": "0.5.7",
     "json-schema-to-ts": "1.6.4",
     "npm-check-updates": "11.7.1",
     "prettier": "2.3.1",
@@ -63,6 +62,6 @@
     "webpack": "5.39.1",
     "webpack-node-externals": "3.0.0"
   },
-  "author": "The serverless webpack authors (https://github.com/elastic-coders/serverless-webpack)",
+  "author": "Jose Monteiro <j.pedroteixeira.monteiro@gmail.com>",
   "license": "MIT"
 }

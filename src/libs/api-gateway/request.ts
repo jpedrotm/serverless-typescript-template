@@ -27,7 +27,7 @@ export async function apiHandler<I, J>({
     const response = await execute(event, body, pathParameters, logger);
     return formatJSONResponse(response.body, response.statusCode);
   } catch (error) {
-    return handleErrorResponse(error, logger);
+    return handleErrorResponse(error as Error, logger);
   }
 }
 
@@ -44,8 +44,8 @@ const validateEventInput = <I, J>(
   } catch (error) {
     throw new APIError({
       code: 'invalid-input',
-      error: error,
-      message: error.message,
+      error: error as Error,
+      message: (error as Error).message,
       status: 404,
     });
   }

@@ -1,5 +1,4 @@
-import 'source-map-support/register';
-
+import { JSONObject } from '@common/types';
 import { apiHandler } from '@libs/api-gateway';
 import { Result } from '@libs/api-gateway/types';
 import { Logger } from '@libs/log';
@@ -11,7 +10,7 @@ export const handler = async (
   event: APIGatewayEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> => {
-  return apiHandler<HelloDataType, Record<string, unknown>>({
+  return apiHandler<HelloDataType, JSONObject>({
     context,
     event,
     execute: (
