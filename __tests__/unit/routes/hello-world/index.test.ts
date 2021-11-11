@@ -1,3 +1,4 @@
+import { Logger } from '@libs/log';
 import { handler as helloWorld } from '@routes/hello-world';
 import createEvent from '@serverless/event-mocks';
 import {
@@ -7,7 +8,9 @@ import {
   Context,
 } from 'aws-lambda';
 
-import { Mocks, expectResponse } from '../../common';
+import { Mocks, expectResponse } from '../../../common';
+
+jest.mock('@libs/log');
 
 const RESOURCE_PATH = '/hello';
 const ID = '22543534-d8dd-48eb-8b5c-c714ed2df982';
@@ -23,6 +26,9 @@ describe('Routes - Hello World', (): void => {
   let contextMock: Context;
 
   beforeEach((): void => {
+    Logger.prototype.info = jest.fn();
+    Logger.prototype.error = jest.fn();
+
     eventMock = createEvent('aws:apiGateway', {
       body: createRequestMock(),
       headers: {

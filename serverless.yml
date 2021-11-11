@@ -1,0 +1,115 @@
+service:
+  name: linkal
+
+custom:
+  cors:
+    origins:
+      - '*'
+    headers:
+      - Authorization
+      - Content-Type
+  environment:
+    cognitoAppClientId: !Ref CognitoUserPoolClient
+    cognitoUserPoolId: !Ref CognitoUserPool
+    policyTable: ${self:service.name}-policy
+  prune:
+    automatic: true
+    includeLayers: true
+    number: 5
+  webpack:
+    webpackConfig: ${opt:debug, 'webpack.config.js'}
+    includeModules: true
+  serviceName: ${self:service.name}
+
+package:
+  individually: true
+
+plugins:
+  - serverless-offline
+  - serverless-prune-plugin
+  - serverless-webpack
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: ${opt:region, 'eu-west-1'}
+  stage: ${opt:stage, 'dev'}
+  memorySize: 512
+  timeout: 10
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+    shouldStartNameWithService: true
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1 # reuse HTTP connections : https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/node-reusing-connections.html
+  iamRoleStatements: ${file(./config/roles.yml)}
+  versionFunctions: false
+  logs:
+    restApi: true
+  logRetentionInDays: 180
+  tracing:
+    apiGateway: true
+    lambda: true
+
+functions:
+  hello:
+    name: ${self:service.name}-hello
+    description: 'API Gateway: Hello world message'
+    handler: src/routes/hello-world/index.handler
+    environment: ${self:custom.environment}
+    events:
+      - http:
+          authorizer:
+            name: authorizer
+            # Define key value for cache (required only if cache enabled)
+            identitySource: method.request.header.Authorization
+            # Disable authorization cache
+            resultTtlInSeconds: 0
+            type: request
+          cors: ${self:custom.cors}
+          method: post
+          path: /hello
+          request:
+            schema:
+              application/json: ${file(src/routes/hello-world/schema.json)}
+  authorizer:
+    name: ${self:service.name}-authorizer
+    description: 'API Gateway Authorizer: Authorize requests to the API'
+    handler: src/events/authorizer/index.handler
+    environment: ${self:custom.environment}
+
+resources:
+  Resources:
+    # Cognito
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        MfaConfiguration: 'OFF'
+        UserPoolName: ${self:service.name}-user-pool
+        UsernameAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 6
+            RequireLowercase: False
+            RequireNumbers: True
+            RequireSymbols: False
+            RequireUppercase: True
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: ${self:service.name}-user-pool-client
+        GenerateSecret: False
+        UserPoolId:
+          Ref: CognitoUserPool
+    # DynamoDB
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service.name}-policy
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: 'group'
+            AttributeType: 'S'
+        KeySchema:
+          - AttributeName: 'group'
+            KeyType: 'HASH'

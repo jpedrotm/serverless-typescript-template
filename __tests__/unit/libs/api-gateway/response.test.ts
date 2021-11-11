@@ -3,12 +3,17 @@ import { handleErrorResponse } from '@libs/api-gateway';
 import { Logger } from '@libs/log';
 import { APIGatewayProxyResult, Context } from 'aws-lambda';
 
-import { Mocks, expectResponse } from '../../common';
+import { Mocks, expectResponse } from '../../../common';
+
+jest.mock('@libs/log');
 
 describe('Libs - API Gateway - Response', (): void => {
   let contextMock: Context;
 
   beforeEach((): void => {
+    Logger.prototype.info = jest.fn();
+    Logger.prototype.error = jest.fn();
+
     contextMock = Mocks.createContext();
   });
 

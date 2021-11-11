@@ -11,7 +11,9 @@ import {
 } from 'aws-lambda';
 import { z } from 'zod';
 
-import { Mocks, expectResponse } from '../../common';
+import { Mocks, expectResponse } from '../../../common';
+
+jest.mock('@libs/log');
 
 const RESOURCE_PATH = '/hello';
 const ID = '22543534-d8dd-48eb-8b5c-c714ed2df982';
@@ -46,6 +48,9 @@ describe('Libs - API Gateway - Request', (): void => {
   let contextMock: Context;
 
   beforeEach((): void => {
+    Logger.prototype.info = jest.fn();
+    Logger.prototype.error = jest.fn();
+
     eventMock = createEvent('aws:apiGateway', {
       body: createRequestMock('Linkal'),
       headers: {

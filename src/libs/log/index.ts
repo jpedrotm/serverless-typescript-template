@@ -1,17 +1,23 @@
 import { Context } from 'aws-lambda';
-import { LambdaLog, LambdaLogOptions } from 'lambda-log';
+import { LambdaLog } from 'lambda-log';
 
 export class Logger extends LambdaLog {
-  constructor(private stage: string, private context: Context) {
+  constructor(private stage: string, private context?: Context) {
     super();
     this.setupLoggerOptions();
     this.setupAlertTopic();
   }
 
   setupLoggerOptions(): void {
+    const tags: string[] = [this.stage];
+    if (this.context) {
+      tags.push(this.context.awsRequestId);
+      tags.push(this.context.functionName);
+    }
+
     this.options = {
-      tags: [this.stage, this.context.awsRequestId, this.context.functionName],
-    } as LambdaLogOptions;
+      tags,
+    };
   }
 
   setupAlertTopic(): void {

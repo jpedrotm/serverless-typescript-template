@@ -1,0 +1,10 @@
+- Effect: Allow
+  Action:
+    - cognito-idp:*
+  Resource: !GetAtt CognitoUserPool.Arn
+
+- Effect: Allow
+  Action:
+    - dynamodb:BatchGetItem
+  Resource:
+    - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.serviceName}-policy

@@ -4,12 +4,16 @@ packages/**/lib
 
 # build or temporary outputs
 out/
+.webpack/
 *.ignore.*
 
 # Logs
 logs
 *.log
 npm-debug.log
+
+# Serverless Framework
+.serverless
 
 # IDE
 **/.idea

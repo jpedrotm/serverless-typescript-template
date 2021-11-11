@@ -21,7 +21,8 @@ export const Mocks = {
   },
 
   setEnvironment: (environment: JSONObject): void => {
-    environment.serviceName = 'service-accounts';
-    environment.stage = 'test';
+    environment.cognitoAppClientId = '41tj8tbvp17bpt148qn8of1lra';
+    environment.cognitoUserPoolId = 'eu-west-1_RZtiZqqRb';
+    environment.policyTable = 'linkal-policy';
   },
 };

@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@common/*": ["src/common/*"],
+      "@events/*": ["src/events/*"],
       "@libs/*": ["src/libs/*"],
       "@routes/*": ["src/routes/*"]
     }

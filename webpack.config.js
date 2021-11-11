@@ -3,46 +3,47 @@ const slsw = require('serverless-webpack');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
-  context: __dirname,
-  mode: 'production',
+  devtool: false,
   entry: slsw.lib.entries,
-  resolve: {
-    extensions: ['.mjs', '.json', '.ts'],
-    symlinks: false,
-    cacheWithContext: false,
-    plugins: [
-      new TsconfigPathsPlugin({
-        configFile: './tsconfig.paths.json',
-      }),
+  mode: 'production',
+  module: {
+    rules: [
+      {
+        exclude: /node_modules/,
+        include: [path.resolve(__dirname, 'src')],
+        test: /\.ts(x?)$/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
     ],
+  },
+  optimization: {
+    // We no not want to minimize our code.
+    minimize: false,
   },
   output: {
     filename: '[name].js',
     libraryTarget: 'commonjs2',
     path: path.join(__dirname, '.webpack'),
   },
-  optimization: {
-    concatenateModules: false,
-  },
-  target: 'node',
-  module: {
-    rules: [
-      {
-        test: /\.(ts?)$/,
-        loader: 'ts-loader',
-        exclude: [
-          [
-            path.resolve(__dirname, 'node_modules'),
-            path.resolve(__dirname, '.serverless'),
-            path.resolve(__dirname, '.webpack'),
-          ],
-        ],
-        options: {
-          transpileOnly: true,
-          experimentalWatchApi: true,
-        },
-      },
-    ],
+  performance: {
+    // Turn off size warnings for entry points
+    hints: false,
   },
   plugins: [],
+  resolve: {
+    extensions: ['.ts', '.js', '.tsx', '.jsx'],
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: './tsconfig.paths.json',
+      }),
+    ],
+  },
+  target: 'node',
 };
