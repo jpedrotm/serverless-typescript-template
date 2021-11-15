@@ -1,7 +1,7 @@
 {
   "name": "linkal",
   "version": "1.0.0",
-  "description": "Serverless aws-nodejs-typescript template",
+  "description": "Serverless framework template.",
   "scripts": {
     "build": "webpack",
     "dependency:check": "ncu",
